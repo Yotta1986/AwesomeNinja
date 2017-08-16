@@ -32,3 +32,10 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+Awesome Ninja/Temp/
+Awesome Ninja/Library/
+Awesome Ninja/Assets/Plugins/
+Awesome Ninja/Assets/Textures/
+Awesome Ninja/Assets/Models/
+Awesome Ninja/Assets/Sounds/
+Awesome Ninja/Assets/Fonts/
