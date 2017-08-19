@@ -49,7 +49,6 @@ public class PlayerSwordEffect : MonoBehaviour {
 		if (show) 
 		{
 			audioSource.PlayOneShot (slash3Yell);
-			audioSource.PlayOneShot (swordSlashSound);
 		}
 	}
 
@@ -57,6 +56,7 @@ public class PlayerSwordEffect : MonoBehaviour {
 	{
 		if (show) 
 		{
+			audioSource.PlayOneShot (swordSlashSound);
 			audioSource.PlayOneShot (slash3GroundImpact);
 			slash3GroundImpactParticleSystem.Play ();
 		}

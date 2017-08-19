@@ -27,13 +27,14 @@ public class MovementKeyboard : MonoBehaviour {
 
 	void Update () 
 	{
-		// Recive input and calculate
-		Vector3 movementDirection;
-		movementDirection = 
+		motor.movementDirection  = 
 			Input.GetAxis (horizontalString) * screenMovementRight + Input.GetAxis (verticalString) * screenMovementForward;
-		movementDirection.Normalize ();
+		motor.movementDirection.Normalize ();
 
-		// Apply input
-		motor.movementDirection = movementDirection;
+		if (Input.GetAxis (verticalString) != 0 || Input.GetAxis (horizontalString) != 0) 
+			motor.isMoving = true;
+		else 
+			motor.isMoving = false;
+		
 	}
 }

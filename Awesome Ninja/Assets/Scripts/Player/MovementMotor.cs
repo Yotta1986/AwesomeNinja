@@ -4,61 +4,56 @@ using UnityEngine;
 
 public class MovementMotor : MonoBehaviour {
 
-	public Rigidbody rb;
 	public Animator anim;
 
-	public float walkingSpeed = 5f;
-	public float walkingSnapyness = 50f;
-	public float turningSmoothing = 0.3f;
 
 	[HideInInspector]
 	public Vector3 movementDirection;
-
-	private Vector3 faceDirection;
+	[HideInInspector]
+	public bool isMoving;
 
 	void Awake () 
 	{
-		rb = GetComponent<Rigidbody> ();
+		
 	}
 	
 	void Start()
 	{
-		faceDirection = transform.forward;
+		movementDirection = transform.forward;
 	}
 
 	void Update()
 	{
-		// set animation
-		if (movementDirection.magnitude > 0) 
-			anim.SetBool (AnimStates.RUN, true);
+		// anime and  move forward
+		if (isMoving) 
+			anim.SetBool (PlayerStates.RUN, true);
 		else 
-			anim.SetBool (AnimStates.RUN, false);
+			anim.SetBool (PlayerStates.RUN, false);
 	}
 
 	void FixedUpdate()
 	{
-		// move
-		Vector3 deltaVelocity = movementDirection * walkingSpeed - rb.velocity;
-		rb.AddForce (deltaVelocity * walkingSnapyness, ForceMode.Acceleration);
-
 		// rotate
-		faceDirection = movementDirection;
-		if (faceDirection == Vector3.zero)
-			rb.angularVelocity = Vector3.zero;
-		else {
-			float rotationAngle = AnglesAroundAxis (transform.forward, faceDirection, Vector3.up);
-			rb.angularVelocity = Vector3.up * rotationAngle * turningSmoothing;
+		if (isMoving) 
+		{
+			float angle = signedAngle (movementDirection, transform.forward, Vector3.up);
+
+			if( angle > -10 && angle < 10)
+				transform.Rotate (0, angle , 0);
+			else
+				transform.Rotate (0, angle / 3 , 0);
 		}
 	}
 
-	float AnglesAroundAxis(Vector3 dirA, Vector3 dirB, Vector3 axis)
+	float signedAngle(Vector3 targetDir, Vector3 forward, Vector3 axis)
 	{
-		dirA = dirA - Vector3.Project (dirA, axis);
-		dirB = dirB - Vector3.Project (dirB, axis);
+		targetDir = targetDir - Vector3.Project (targetDir, axis);
+		forward = forward - Vector3.Project (forward, axis);
 
-		float angle = Vector3.Angle (dirA, dirB);
+		float angle = Vector3.Angle (targetDir, forward);
 
 		return angle * 
-			(Vector3.Dot (axis, Vector3.Cross(dirA, dirB)) < 0 ? -1 : 1); 		// keep angle positive
+			(Vector3.Dot (axis, Vector3.Cross(targetDir, forward)) < 0 ? 1 : -1); 		
 	}
+
 }
